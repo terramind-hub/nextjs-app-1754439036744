@@ -8,6 +8,8 @@ interface NetflixContextType {
   setSelectedContent: (content: Movie | null) => void
   searchQuery: string
   setSearchQuery: (query: string) => void
+  isLoading: boolean
+  setIsLoading: (loading: boolean) => void
 }
 
 const NetflixContext = createContext<NetflixContextType | undefined>(undefined)
@@ -15,14 +17,19 @@ const NetflixContext = createContext<NetflixContextType | undefined>(undefined)
 export function NetflixProvider({ children }: { children: ReactNode }) {
   const [selectedContent, setSelectedContent] = useState<Movie | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  const value = {
+    selectedContent,
+    setSelectedContent,
+    searchQuery,
+    setSearchQuery,
+    isLoading,
+    setIsLoading,
+  }
 
   return (
-    <NetflixContext.Provider value={{
-      selectedContent,
-      setSelectedContent,
-      searchQuery,
-      setSearchQuery
-    }}>
+    <NetflixContext.Provider value={value}>
       {children}
     </NetflixContext.Provider>
   )

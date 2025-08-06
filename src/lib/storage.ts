@@ -1,4 +1,4 @@
-import { Movie } from '@/types/movie'
+import { Movie, WatchlistItem, ContinueWatchingItem } from '@/types/movie'
 
 // My List functionality
 export function addToMyList(profileId: string, movie: Movie): void {
@@ -34,13 +34,17 @@ export function addToContinueWatching(profileId: string, movie: Movie, progress:
   const key = `continueWatching_${profileId}`
   const currentList = getContinueWatching(profileId)
   
-  // Remove if already exists
+  // Remove existing entry if it exists
   const filteredList = currentList.filter(item => item.id !== movie.id)
   
-  // Add to beginning with progress
-  const movieWithProgress = { ...movie, progress }
-  const updatedList = [movieWithProgress, ...filteredList].slice(0, 10) // Keep only 10 items
+  // Add new entry with progress
+  const movieWithProgress = {
+    ...movie,
+    progress,
+    lastWatched: new Date().toISOString()
+  }
   
+  const updatedList = [movieWithProgress, ...filteredList].slice(0, 10) // Keep only 10 items
   localStorage.setItem(key, JSON.stringify(updatedList))
 }
 
@@ -51,33 +55,37 @@ export function removeFromContinueWatching(profileId: string, movieId: string): 
   localStorage.setItem(key, JSON.stringify(updatedList))
 }
 
-export function getContinueWatching(profileId: string): Movie[] {
+export function getContinueWatching(profileId: string): (Movie & { progress: number; lastWatched: string })[] {
   const key = `continueWatching_${profileId}`
   const stored = localStorage.getItem(key)
   return stored ? JSON.parse(stored) : []
 }
 
-// Recently Watched functionality
-export function addToRecentlyWatched(profileId: string, movie: Movie): void {
-  const key = `recentlyWatched_${profileId}`
-  const currentList = getRecentlyWatched(profileId)
+// Watch history
+export function addToWatchHistory(profileId: string, movie: Movie): void {
+  const key = `watchHistory_${profileId}`
+  const currentHistory = getWatchHistory(profileId)
   
-  // Remove if already exists
-  const filteredList = currentList.filter(item => item.id !== movie.id)
+  // Remove existing entry if it exists
+  const filteredHistory = currentHistory.filter(item => item.id !== movie.id)
   
-  // Add to beginning
-  const updatedList = [movie, ...filteredList].slice(0, 20) // Keep only 20 items
+  // Add new entry at the beginning
+  const movieWithTimestamp = {
+    ...movie,
+    watchedAt: new Date().toISOString()
+  }
   
-  localStorage.setItem(key, JSON.stringify(updatedList))
+  const updatedHistory = [movieWithTimestamp, ...filteredHistory].slice(0, 50) // Keep only 50 items
+  localStorage.setItem(key, JSON.stringify(updatedHistory))
 }
 
-export function getRecentlyWatched(profileId: string): Movie[] {
-  const key = `recentlyWatched_${profileId}`
+export function getWatchHistory(profileId: string): (Movie & { watchedAt: string })[] {
+  const key = `watchHistory_${profileId}`
   const stored = localStorage.getItem(key)
   return stored ? JSON.parse(stored) : []
 }
 
-// User preferences
+// Preferences
 export function saveUserPreferences(profileId: string, preferences: any): void {
   const key = `preferences_${profileId}`
   localStorage.setItem(key, JSON.stringify(preferences))
@@ -88,35 +96,8 @@ export function getUserPreferences(profileId: string): any {
   const stored = localStorage.getItem(key)
   return stored ? JSON.parse(stored) : {
     autoplay: true,
-    quality: 'auto',
     subtitles: false,
-    language: 'en'
+    language: 'en',
+    maturityRating: 'all'
   }
-}
-
-// Search history
-export function addToSearchHistory(profileId: string, query: string): void {
-  if (!query.trim()) return
-  
-  const key = `searchHistory_${profileId}`
-  const currentHistory = getSearchHistory(profileId)
-  
-  // Remove if already exists
-  const filteredHistory = currentHistory.filter(item => item !== query)
-  
-  // Add to beginning
-  const updatedHistory = [query, ...filteredHistory].slice(0, 10) // Keep only 10 items
-  
-  localStorage.setItem(key, JSON.stringify(updatedHistory))
-}
-
-export function getSearchHistory(profileId: string): string[] {
-  const key = `searchHistory_${profileId}`
-  const stored = localStorage.getItem(key)
-  return stored ? JSON.parse(stored) : []
-}
-
-export function clearSearchHistory(profileId: string): void {
-  const key = `searchHistory_${profileId}`
-  localStorage.removeItem(key)
 }
