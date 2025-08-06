@@ -38,6 +38,7 @@ export default function ContentModal({ content, onClose }: ContentModalProps) {
   const handlePlay = () => {
     // In a real app, this would start video playback
     console.log('Playing:', content.title)
+    onClose()
   }
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -51,7 +52,7 @@ export default function ContentModal({ content, onClose }: ContentModalProps) {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
       onClick={handleBackdropClick}
     >
-      <div className="relative bg-netflix-gray rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+      <div className="relative bg-netflix-gray rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto animate-scale-up">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -83,9 +84,9 @@ export default function ContentModal({ content, onClose }: ContentModalProps) {
           <div className="absolute bottom-8 left-8 flex items-center space-x-4">
             <button
               onClick={handlePlay}
-              className="flex items-center space-x-2 bg-white text-black px-6 py-3 rounded font-bold hover:bg-gray-200 transition-colors"
+              className="flex items-center space-x-2 bg-white text-black px-8 py-3 rounded font-bold hover:bg-gray-200 transition-colors"
             >
-              <PlayIcon className="w-5 h-5" />
+              <PlayIcon className="w-6 h-6" />
               <span>Play</span>
             </button>
             
@@ -118,19 +119,25 @@ export default function ContentModal({ content, onClose }: ContentModalProps) {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Info */}
             <div className="lg:col-span-2">
+              <h1 className="text-3xl font-bold text-white mb-4">{content.title}</h1>
+              
               {/* Metadata */}
-              <div className="flex items-center space-x-4 mb-4 text-sm">
+              <div className="flex items-center space-x-4 mb-6 text-sm">
                 <span className="text-green-400 font-bold">{content.imdbRating}% Match</span>
                 <span>{content.year}</span>
                 <span className="border border-gray-500 px-2 py-1 text-xs">{content.rating}</span>
+                <span className="flex items-center">
+                  <span className="text-yellow-400 mr-1">★</span>
+                  {content.imdbRating}
+                </span>
               </div>
-
+              
               {/* Description */}
-              <p className="text-white text-lg mb-6 leading-relaxed">
+              <p className="text-white text-lg leading-relaxed mb-6">
                 {content.overview}
               </p>
             </div>
-
+            
             {/* Side Info */}
             <div className="text-sm text-gray-300 space-y-4">
               <div>

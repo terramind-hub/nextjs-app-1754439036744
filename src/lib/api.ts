@@ -18,20 +18,61 @@ const mockMovies: Movie[] = [
   },
   {
     id: '2',
+    title: 'The Witcher',
+    overview: 'Geralt of Rivia, a solitary monster hunter, struggles to find his place in a world where people often prove more wicked than beasts.',
+    posterUrl: 'https://via.placeholder.com/300x450/1a1a1a/ffffff?text=The+Witcher',
+    backdropUrl: 'https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=The+Witcher',
+    year: 2019,
+    genre: 'Fantasy, Drama, Action',
+    rating: 'TV-MA',
+    imdbRating: 8.2,
+    isMovie: false,
+    seasons: 3,
+    episodes: 24
+  },
+  {
+    id: '3',
+    title: 'Red Notice',
+    overview: 'An Interpol agent tracks the world\'s most wanted art thief.',
+    posterUrl: 'https://via.placeholder.com/300x450/1a1a1a/ffffff?text=Red+Notice',
+    backdropUrl: 'https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=Red+Notice',
+    year: 2021,
+    genre: 'Action, Comedy, Crime',
+    rating: 'PG-13',
+    imdbRating: 6.4,
+    isMovie: true,
+    duration: '118 min'
+  },
+  {
+    id: '4',
+    title: 'Squid Game',
+    overview: 'Hundreds of cash-strapped players accept a strange invitation to compete in children\'s games for a tempting prize, but the stakes are deadly.',
+    posterUrl: 'https://via.placeholder.com/300x450/1a1a1a/ffffff?text=Squid+Game',
+    backdropUrl: 'https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=Squid+Game',
+    year: 2021,
+    genre: 'Thriller, Drama',
+    rating: 'TV-MA',
+    imdbRating: 8.0,
+    isMovie: false,
+    seasons: 1,
+    episodes: 9
+  },
+  {
+    id: '5',
     title: 'The Crown',
     overview: 'Follows the political rivalries and romance of Queen Elizabeth II\'s reign and the events that shaped the second half of the twentieth century.',
     posterUrl: 'https://via.placeholder.com/300x450/1a1a1a/ffffff?text=The+Crown',
     backdropUrl: 'https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=The+Crown',
     year: 2016,
-    genre: 'Drama, History',
+    genre: 'Biography, Drama, History',
     rating: 'TV-MA',
-    imdbRating: 8.6,
+    imdbRating: 8.7,
     isMovie: false,
     seasons: 6,
     episodes: 60
   },
   {
-    id: '3',
+    id: '6',
     title: 'Extraction',
     overview: 'A black-market mercenary who has nothing to lose is hired to rescue the kidnapped son of an imprisoned international crime lord.',
     posterUrl: 'https://via.placeholder.com/300x450/1a1a1a/ffffff?text=Extraction',
@@ -44,13 +85,13 @@ const mockMovies: Movie[] = [
     duration: '116 min'
   },
   {
-    id: '4',
+    id: '7',
     title: 'Money Heist',
     overview: 'An unusual group of robbers attempt to carry out the most perfect robbery in Spanish history - stealing 2.4 billion euros from the Royal Mint of Spain.',
     posterUrl: 'https://via.placeholder.com/300x450/1a1a1a/ffffff?text=Money+Heist',
     backdropUrl: 'https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=Money+Heist',
     year: 2017,
-    genre: 'Crime, Drama, Thriller',
+    genre: 'Crime, Drama, Mystery',
     rating: 'TV-MA',
     imdbRating: 8.2,
     isMovie: false,
@@ -58,34 +99,7 @@ const mockMovies: Movie[] = [
     episodes: 41
   },
   {
-    id: '5',
-    title: 'The Witcher',
-    overview: 'Geralt of Rivia, a solitary monster hunter, struggles to find his place in a world where people often prove more wicked than beasts.',
-    posterUrl: 'https://via.placeholder.com/300x450/1a1a1a/ffffff?text=The+Witcher',
-    backdropUrl: 'https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=The+Witcher',
-    year: 2019,
-    genre: 'Action, Adventure, Drama',
-    rating: 'TV-MA',
-    imdbRating: 8.2,
-    isMovie: false,
-    seasons: 3,
-    episodes: 24
-  },
-  {
-    id: '6',
-    title: 'Bird Box',
-    overview: 'Five years after an ominous unseen presence drives most of society to suicide, a mother and her two children make a desperate bid to reach safety.',
-    posterUrl: 'https://via.placeholder.com/300x450/1a1a1a/ffffff?text=Bird+Box',
-    backdropUrl: 'https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=Bird+Box',
-    year: 2018,
-    genre: 'Horror, Sci-Fi, Thriller',
-    rating: 'R',
-    imdbRating: 6.6,
-    isMovie: true,
-    duration: '124 min'
-  },
-  {
-    id: '7',
+    id: '8',
     title: 'Ozark',
     overview: 'A financial advisor drags his family from Chicago to the Missouri Ozarks, where he must launder money to appease a drug boss.',
     posterUrl: 'https://via.placeholder.com/300x450/1a1a1a/ffffff?text=Ozark',
@@ -97,19 +111,6 @@ const mockMovies: Movie[] = [
     isMovie: false,
     seasons: 4,
     episodes: 44
-  },
-  {
-    id: '8',
-    title: 'The Irishman',
-    overview: 'A mob hitman recalls his possible involvement with the slaying of Jimmy Hoffa.',
-    posterUrl: 'https://via.placeholder.com/300x450/1a1a1a/ffffff?text=The+Irishman',
-    backdropUrl: 'https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=The+Irishman',
-    year: 2019,
-    genre: 'Biography, Crime, Drama',
-    rating: 'R',
-    imdbRating: 7.8,
-    isMovie: true,
-    duration: '209 min'
   }
 ]
 
@@ -137,7 +138,7 @@ export async function getMoviesByCategory(category: string): Promise<Movie[]> {
     case 'drama':
       return mockMovies.filter(movie => movie.genre.includes('Drama'))
     case 'recent':
-      return mockMovies.filter(movie => movie.year >= 2018)
+      return mockMovies.filter(movie => movie.year >= 2020)
     default:
       return mockMovies
   }

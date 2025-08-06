@@ -36,15 +36,13 @@ export interface Review {
   date: string
 }
 
-export interface WatchlistItem {
-  movieId: string
-  addedAt: string
-  profileId: string
-}
-
-export interface ContinueWatchingItem {
+export interface WatchProgress {
   movieId: string
   progress: number
   lastWatched: string
-  profileId: string
+}
+
+export interface MyListItem {
+  movie: Movie
+  addedAt: string
 }
