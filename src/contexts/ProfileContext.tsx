@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 
-export interface Profile {
+interface Profile {
   id: string
   name: string
   avatar: string
@@ -29,7 +29,7 @@ const defaultProfiles: Profile[] = [
   {
     id: '2',
     name: 'Kids',
-    avatar: '🧒',
+    avatar: '👶',
     isKids: true
   }
 ]
@@ -45,12 +45,12 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
       setProfiles(JSON.parse(savedProfiles))
     }
 
-    // Load current profile
+    // Load current profile from localStorage
     const savedCurrentProfile = localStorage.getItem('netflix_current_profile')
     if (savedCurrentProfile) {
       setCurrentProfile(JSON.parse(savedCurrentProfile))
     } else {
-      // Set default profile
+      // Set default profile if none selected
       setCurrentProfile(defaultProfiles[0])
     }
   }, [])
@@ -76,20 +76,22 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
   }
 
   const removeProfile = (id: string) => {
-    setProfiles(prev => prev.filter(p => p.id !== id))
+    setProfiles(prev => prev.filter(profile => profile.id !== id))
     if (currentProfile?.id === id) {
       setCurrentProfile(profiles[0] || null)
     }
   }
 
+  const value = {
+    profiles,
+    currentProfile,
+    setCurrentProfile,
+    addProfile,
+    removeProfile
+  }
+
   return (
-    <ProfileContext.Provider value={{
-      profiles,
-      currentProfile,
-      setCurrentProfile,
-      addProfile,
-      removeProfile
-    }}>
+    <ProfileContext.Provider value={value}>
       {children}
     </ProfileContext.Provider>
   )

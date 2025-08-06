@@ -38,7 +38,6 @@ export default function ContentModal({ content, onClose }: ContentModalProps) {
   const handlePlay = () => {
     // In a real app, this would start video playback
     console.log('Playing:', content.title)
-    onClose()
   }
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -52,7 +51,7 @@ export default function ContentModal({ content, onClose }: ContentModalProps) {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
       onClick={handleBackdropClick}
     >
-      <div className="relative bg-netflix-gray rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto animate-scale-up">
+      <div className="relative bg-netflix-gray rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -84,9 +83,9 @@ export default function ContentModal({ content, onClose }: ContentModalProps) {
           <div className="absolute bottom-8 left-8 flex items-center space-x-4">
             <button
               onClick={handlePlay}
-              className="flex items-center space-x-2 bg-white text-black px-8 py-3 rounded font-bold hover:bg-gray-200 transition-colors"
+              className="flex items-center space-x-2 bg-white text-black px-6 py-3 rounded font-bold hover:bg-gray-200 transition-colors"
             >
-              <PlayIcon className="w-6 h-6" />
+              <PlayIcon className="w-5 h-5" />
               <span>Play</span>
             </button>
             
@@ -133,30 +132,30 @@ export default function ContentModal({ content, onClose }: ContentModalProps) {
               </div>
               
               {/* Description */}
-              <p className="text-gray-300 text-lg leading-relaxed mb-6">
+              <p className="text-white text-lg leading-relaxed mb-6">
                 {content.overview}
               </p>
             </div>
             
             {/* Side Info */}
-            <div className="text-sm text-gray-400 space-y-4">
+            <div className="text-sm text-gray-300 space-y-4">
               <div>
-                <span className="text-gray-500">Genre: </span>
+                <span className="text-gray-400">Genre: </span>
                 <span className="text-white">{content.genre}</span>
               </div>
               
               <div>
-                <span className="text-gray-500">Duration: </span>
+                <span className="text-gray-400">Duration: </span>
                 <span className="text-white">{content.duration || '120 min'}</span>
               </div>
               
               <div>
-                <span className="text-gray-500">Director: </span>
+                <span className="text-gray-400">Director: </span>
                 <span className="text-white">{content.director || 'Unknown'}</span>
               </div>
               
               <div>
-                <span className="text-gray-500">Cast: </span>
+                <span className="text-gray-400">Cast: </span>
                 <span className="text-white">{content.cast || 'Various actors'}</span>
               </div>
             </div>
