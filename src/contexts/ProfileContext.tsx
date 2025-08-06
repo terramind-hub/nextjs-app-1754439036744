@@ -24,14 +24,14 @@ const defaultProfiles: Profile[] = [
     id: '1',
     name: 'User',
     avatar: '👤',
-    isKids: false,
+    isKids: false
   },
   {
     id: '2',
     name: 'Kids',
     avatar: '👶',
-    isKids: true,
-  },
+    isKids: true
+  }
 ]
 
 export function ProfileProvider({ children }: { children: ReactNode }) {
@@ -45,12 +45,12 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
       setProfiles(JSON.parse(savedProfiles))
     }
 
-    // Load current profile from localStorage
+    // Load current profile
     const savedCurrentProfile = localStorage.getItem('netflix_current_profile')
     if (savedCurrentProfile) {
       setCurrentProfile(JSON.parse(savedCurrentProfile))
     } else {
-      // Set default profile if none selected
+      // Set default profile
       setCurrentProfile(defaultProfiles[0])
     }
   }, [])
@@ -70,7 +70,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
   const addProfile = (profileData: Omit<Profile, 'id'>) => {
     const newProfile: Profile = {
       ...profileData,
-      id: Date.now().toString(),
+      id: Date.now().toString()
     }
     setProfiles(prev => [...prev, newProfile])
   }
@@ -87,7 +87,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
     currentProfile,
     setCurrentProfile,
     addProfile,
-    removeProfile,
+    removeProfile
   }
 
   return (

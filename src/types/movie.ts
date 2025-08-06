@@ -3,7 +3,7 @@ export interface Movie {
   title: string
   overview: string
   posterUrl: string
-  backdropUrl: string
+  backdropUrl?: string
   year: number
   genre: string
   rating: string
