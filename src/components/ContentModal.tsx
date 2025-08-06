@@ -52,7 +52,7 @@ export default function ContentModal({ content, onClose }: ContentModalProps) {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
       onClick={handleBackdropClick}
     >
-      <div className="relative bg-netflix-gray rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+      <div className="relative bg-netflix-gray rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto animate-scale-up">
         {/* Close Button */}
         <button
           onClick={onClose}
@@ -133,30 +133,30 @@ export default function ContentModal({ content, onClose }: ContentModalProps) {
               </div>
               
               {/* Description */}
-              <p className="text-white text-lg leading-relaxed mb-6">
+              <p className="text-gray-300 text-lg leading-relaxed mb-6">
                 {content.overview}
               </p>
             </div>
             
             {/* Side Info */}
-            <div className="text-sm text-gray-300 space-y-4">
+            <div className="text-sm text-gray-400 space-y-4">
               <div>
-                <span className="text-gray-400">Genre: </span>
+                <span className="text-gray-500">Genre: </span>
                 <span className="text-white">{content.genre}</span>
               </div>
               
               <div>
-                <span className="text-gray-400">Duration: </span>
+                <span className="text-gray-500">Duration: </span>
                 <span className="text-white">{content.duration || '120 min'}</span>
               </div>
               
               <div>
-                <span className="text-gray-400">Director: </span>
+                <span className="text-gray-500">Director: </span>
                 <span className="text-white">{content.director || 'Unknown'}</span>
               </div>
               
               <div>
-                <span className="text-gray-400">Cast: </span>
+                <span className="text-gray-500">Cast: </span>
                 <span className="text-white">{content.cast || 'Various actors'}</span>
               </div>
             </div>

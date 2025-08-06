@@ -12,12 +12,8 @@ const mockMovies: Movie[] = [
     genre: 'Sci-Fi, Drama, Horror',
     rating: 'TV-14',
     imdbRating: 8.7,
-    duration: '51 min',
-    director: 'The Duffer Brothers',
-    cast: 'Millie Bobby Brown, Finn Wolfhard, Winona Ryder',
-    isMovie: false,
-    seasons: 4,
-    episodes: 34
+    type: 'tv',
+    seasons: 4
   },
   {
     id: '2',
@@ -26,15 +22,11 @@ const mockMovies: Movie[] = [
     posterUrl: 'https://via.placeholder.com/300x450/1a1a1a/ffffff?text=The+Crown',
     backdropUrl: 'https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=The+Crown',
     year: 2016,
-    genre: 'Drama, History, Biography',
+    genre: 'Drama, History',
     rating: 'TV-MA',
     imdbRating: 8.6,
-    duration: '58 min',
-    director: 'Peter Morgan',
-    cast: 'Claire Foy, Olivia Colman, Imelda Staunton',
-    isMovie: false,
-    seasons: 6,
-    episodes: 60
+    type: 'tv',
+    seasons: 6
   },
   {
     id: '3',
@@ -46,10 +38,8 @@ const mockMovies: Movie[] = [
     genre: 'Action, Thriller',
     rating: 'R',
     imdbRating: 6.7,
-    duration: '116 min',
-    director: 'Sam Hargrave',
-    cast: 'Chris Hemsworth, Rudhraksh Jaiswal, Randeep Hooda',
-    isMovie: true
+    type: 'movie',
+    duration: '116 min'
   },
   {
     id: '4',
@@ -61,12 +51,8 @@ const mockMovies: Movie[] = [
     genre: 'Fantasy, Adventure, Drama',
     rating: 'TV-MA',
     imdbRating: 8.2,
-    duration: '60 min',
-    director: 'Lauren Schmidt Hissrich',
-    cast: 'Henry Cavill, Anya Chalotra, Freya Allan',
-    isMovie: false,
-    seasons: 3,
-    episodes: 24
+    type: 'tv',
+    seasons: 3
   },
   {
     id: '5',
@@ -77,13 +63,9 @@ const mockMovies: Movie[] = [
     year: 2017,
     genre: 'Crime, Drama, Mystery',
     rating: 'TV-MA',
-    imdbRating: 8.2,
-    duration: '70 min',
-    director: 'Álex Pina',
-    cast: 'Úrsula Corberó, Álvaro Morte, Itziar Ituño',
-    isMovie: false,
-    seasons: 5,
-    episodes: 41
+    imdbRating: 8.3,
+    type: 'tv',
+    seasons: 5
   },
   {
     id: '6',
@@ -95,54 +77,40 @@ const mockMovies: Movie[] = [
     genre: 'Horror, Drama, Sci-Fi',
     rating: 'R',
     imdbRating: 6.6,
-    duration: '124 min',
-    director: 'Susanne Bier',
-    cast: 'Sandra Bullock, Trevante Rhodes, John Malkovich',
-    isMovie: true
+    type: 'movie',
+    duration: '124 min'
   }
 ]
 
 // Generate more mock data
-const generateMockMovies = (count: number, baseId: number = 7): Movie[] => {
-  const genres = ['Action', 'Comedy', 'Drama', 'Horror', 'Sci-Fi', 'Romance', 'Thriller', 'Documentary']
-  const ratings = ['G', 'PG', 'PG-13', 'R', 'TV-14', 'TV-MA']
-  
-  return Array.from({ length: count }, (_, index) => {
-    const id = (baseId + index).toString()
-    const isMovie = Math.random() > 0.5
-    const genre = genres[Math.floor(Math.random() * genres.length)]
-    const rating = ratings[Math.floor(Math.random() * ratings.length)]
-    const year = 2015 + Math.floor(Math.random() * 9)
-    const imdbRating = 5 + Math.random() * 4
-    
-    return {
-      id,
-      title: `${genre} ${isMovie ? 'Movie' : 'Series'} ${id}`,
-      overview: `This is a ${genre.toLowerCase()} ${isMovie ? 'movie' : 'series'} with an engaging storyline that will keep you entertained.`,
-      posterUrl: `https://via.placeholder.com/300x450/1a1a1a/ffffff?text=${genre}+${isMovie ? 'Movie' : 'Series'}+${id}`,
-      backdropUrl: `https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=${genre}+${isMovie ? 'Movie' : 'Series'}+${id}`,
-      year,
-      genre,
-      rating,
-      imdbRating: Math.round(imdbRating * 10) / 10,
-      duration: isMovie ? `${90 + Math.floor(Math.random() * 60)} min` : `${40 + Math.floor(Math.random() * 30)} min`,
-      director: 'Director Name',
-      cast: 'Actor 1, Actor 2, Actor 3',
-      isMovie,
-      ...(isMovie ? {} : {
-        seasons: 1 + Math.floor(Math.random() * 5),
-        episodes: 8 + Math.floor(Math.random() * 16)
-      })
-    }
-  })
+const generateMockMovies = (count: number, baseTitle: string): Movie[] => {
+  return Array.from({ length: count }, (_, index) => ({
+    id: `${baseTitle.toLowerCase().replace(/\s+/g, '-')}-${index + 1}`,
+    title: `${baseTitle} ${index + 1}`,
+    overview: `This is a great ${baseTitle.toLowerCase()} that you should definitely watch. It has amazing storylines and characters.`,
+    posterUrl: `https://via.placeholder.com/300x450/1a1a1a/ffffff?text=${encodeURIComponent(baseTitle + ' ' + (index + 1))}`,
+    backdropUrl: `https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=${encodeURIComponent(baseTitle + ' ' + (index + 1))}`,
+    year: 2020 + (index % 4),
+    genre: 'Drama, Action',
+    rating: 'TV-14',
+    imdbRating: 7.0 + (Math.random() * 2),
+    type: Math.random() > 0.5 ? 'movie' : 'tv',
+    duration: '120 min'
+  }))
 }
 
-const allMovies = [...mockMovies, ...generateMockMovies(50)]
+const allMovies = [
+  ...mockMovies,
+  ...generateMockMovies(20, 'Action Movie'),
+  ...generateMockMovies(20, 'Comedy Show'),
+  ...generateMockMovies(20, 'Drama Series'),
+  ...generateMockMovies(20, 'Thriller Film')
+]
 
 export async function getFeaturedMovie(): Promise<Movie> {
   // Simulate API delay
   await new Promise(resolve => setTimeout(resolve, 500))
-  return allMovies[0]
+  return mockMovies[0]
 }
 
 export async function getMoviesByCategory(category: string): Promise<Movie[]> {
@@ -152,19 +120,19 @@ export async function getMoviesByCategory(category: string): Promise<Movie[]> {
   // Return different subsets based on category
   switch (category) {
     case 'trending':
-      return allMovies.slice(0, 12)
+      return allMovies.slice(0, 20)
     case 'popular':
-      return allMovies.slice(5, 17)
+      return allMovies.slice(5, 25)
     case 'action':
-      return allMovies.filter(movie => movie.genre.includes('Action')).slice(0, 12)
+      return allMovies.filter(movie => movie.genre.includes('Action')).slice(0, 20)
     case 'comedy':
-      return allMovies.filter(movie => movie.genre.includes('Comedy')).slice(0, 12)
+      return allMovies.filter(movie => movie.title.includes('Comedy')).slice(0, 20)
     case 'drama':
-      return allMovies.filter(movie => movie.genre.includes('Drama')).slice(0, 12)
+      return allMovies.filter(movie => movie.genre.includes('Drama')).slice(0, 20)
     case 'recent':
-      return allMovies.filter(movie => movie.year >= 2020).slice(0, 12)
+      return allMovies.filter(movie => movie.year >= 2022).slice(0, 20)
     default:
-      return allMovies.slice(0, 12)
+      return allMovies.slice(0, 20)
   }
 }
 
@@ -179,11 +147,4 @@ export async function searchMovies(query: string): Promise<Movie[]> {
     movie.genre.toLowerCase().includes(query.toLowerCase()) ||
     movie.overview.toLowerCase().includes(query.toLowerCase())
   ).slice(0, 20)
-}
-
-export async function getMovieById(id: string): Promise<Movie | null> {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 200))
-  
-  return allMovies.find(movie => movie.id === id) || null
 }

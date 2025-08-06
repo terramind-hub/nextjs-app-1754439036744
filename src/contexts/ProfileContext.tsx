@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
 
-interface Profile {
+export interface Profile {
   id: string
   name: string
   avatar: string
@@ -22,16 +22,16 @@ const ProfileContext = createContext<ProfileContextType | undefined>(undefined)
 const defaultProfiles: Profile[] = [
   {
     id: '1',
-    name: 'Main Profile',
+    name: 'User',
     avatar: '👤',
-    isKids: false,
+    isKids: false
   },
   {
     id: '2',
     name: 'Kids',
-    avatar: '👶',
-    isKids: true,
-  },
+    avatar: '🧒',
+    isKids: true
+  }
 ]
 
 export function ProfileProvider({ children }: { children: ReactNode }) {
@@ -45,12 +45,12 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
       setProfiles(JSON.parse(savedProfiles))
     }
 
-    // Load current profile from localStorage
+    // Load current profile
     const savedCurrentProfile = localStorage.getItem('netflix_current_profile')
     if (savedCurrentProfile) {
       setCurrentProfile(JSON.parse(savedCurrentProfile))
     } else {
-      // Set default profile if none selected
+      // Set default profile
       setCurrentProfile(defaultProfiles[0])
     }
   }, [])
@@ -70,28 +70,26 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
   const addProfile = (profileData: Omit<Profile, 'id'>) => {
     const newProfile: Profile = {
       ...profileData,
-      id: Date.now().toString(),
+      id: Date.now().toString()
     }
     setProfiles(prev => [...prev, newProfile])
   }
 
   const removeProfile = (id: string) => {
-    setProfiles(prev => prev.filter(profile => profile.id !== id))
+    setProfiles(prev => prev.filter(p => p.id !== id))
     if (currentProfile?.id === id) {
       setCurrentProfile(profiles[0] || null)
     }
   }
 
-  const value = {
-    profiles,
-    currentProfile,
-    setCurrentProfile,
-    addProfile,
-    removeProfile,
-  }
-
   return (
-    <ProfileContext.Provider value={value}>
+    <ProfileContext.Provider value={{
+      profiles,
+      currentProfile,
+      setCurrentProfile,
+      addProfile,
+      removeProfile
+    }}>
       {children}
     </ProfileContext.Provider>
   )

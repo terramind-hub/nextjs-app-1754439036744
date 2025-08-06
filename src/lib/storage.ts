@@ -40,8 +40,8 @@ export function addToContinueWatching(profileId: string, movie: Movie, progress:
   // Add to beginning with progress
   const updatedList = [{ movie, progress, lastWatched: Date.now() }, ...filteredList]
   
-  // Keep only last 10 items
-  const limitedList = updatedList.slice(0, 10)
+  // Keep only last 20 items
+  const limitedList = updatedList.slice(0, 20)
   
   localStorage.setItem(key, JSON.stringify(limitedList))
 }
@@ -70,8 +70,8 @@ export function addToViewingHistory(profileId: string, movie: Movie): void {
   // Add to beginning
   const updatedHistory = [{ movie, watchedAt: Date.now() }, ...filteredHistory]
   
-  // Keep only last 50 items
-  const limitedHistory = updatedHistory.slice(0, 50)
+  // Keep only last 100 items
+  const limitedHistory = updatedHistory.slice(0, 100)
   
   localStorage.setItem(key, JSON.stringify(limitedHistory))
 }
@@ -100,16 +100,4 @@ export function getRatings(profileId: string): Record<string, 'thumbs-up' | 'thu
   const key = `ratings_${profileId}`
   const stored = localStorage.getItem(key)
   return stored ? JSON.parse(stored) : {}
-}
-
-// Clear all data for a profile
-export function clearProfileData(profileId: string): void {
-  const keys = [
-    `myList_${profileId}`,
-    `continueWatching_${profileId}`,
-    `viewingHistory_${profileId}`,
-    `ratings_${profileId}`
-  ]
-  
-  keys.forEach(key => localStorage.removeItem(key))
 }

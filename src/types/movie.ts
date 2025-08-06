@@ -11,24 +11,18 @@ export interface Movie {
   duration?: string
   director?: string
   cast?: string
-  isMovie: boolean
+  type: 'movie' | 'tv'
   seasons?: number
   episodes?: number
 }
 
-export interface TVShow extends Movie {
-  isMovie: false
-  seasons: number
-  episodes: number
+export interface ContentRow {
+  title: string
+  content: Movie[]
 }
 
-export interface MovieDetails extends Movie {
-  trailerUrl?: string
-  productionCompanies?: string[]
-  budget?: number
-  revenue?: number
-  languages?: string[]
-  countries?: string[]
+export interface SearchResult {
+  query: string
+  results: Movie[]
+  totalResults: number
 }
-
-export type ContentType = Movie | TVShow

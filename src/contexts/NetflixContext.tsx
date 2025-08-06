@@ -19,17 +19,15 @@ export function NetflixProvider({ children }: { children: ReactNode }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [isLoading, setIsLoading] = useState(false)
 
-  const value = {
-    selectedContent,
-    setSelectedContent,
-    searchQuery,
-    setSearchQuery,
-    isLoading,
-    setIsLoading,
-  }
-
   return (
-    <NetflixContext.Provider value={value}>
+    <NetflixContext.Provider value={{
+      selectedContent,
+      setSelectedContent,
+      searchQuery,
+      setSearchQuery,
+      isLoading,
+      setIsLoading
+    }}>
       {children}
     </NetflixContext.Provider>
   )
