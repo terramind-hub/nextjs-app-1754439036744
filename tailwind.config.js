@@ -8,35 +8,33 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        netflix: {
-          red: '#E50914',
-          black: '#141414',
-          gray: '#2F2F2F',
-          'light-gray': '#B3B3B3'
-        }
+        'netflix-red': '#e50914',
+        'netflix-black': '#141414',
+        'netflix-dark-gray': '#181818',
+        'netflix-gray': '#333333',
       },
       fontFamily: {
-        'netflix': ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif']
+        sans: ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.3s ease-out',
-        'scale-up': 'scaleUp 0.2s ease-out'
+        'scale-up': 'scaleUp 0.2s ease-out',
       },
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
-          '100%': { opacity: '1' }
+          '100%': { opacity: '1' },
         },
         slideUp: {
           '0%': { transform: 'translateY(20px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' }
+          '100%': { transform: 'translateY(0)', opacity: '1' },
         },
         scaleUp: {
           '0%': { transform: 'scale(0.95)', opacity: '0' },
-          '100%': { transform: 'scale(1)', opacity: '1' }
-        }
-      }
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+      },
     },
   },
   plugins: [],

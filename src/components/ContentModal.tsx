@@ -1,11 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import Image from 'next/image'
-import { XMarkIcon, PlayIcon, PlusIcon, CheckIcon, HandThumbUpIcon, HandThumbDownIcon } from '@heroicons/react/24/solid'
+import { useEffect, useState } from 'react'
 import { Movie } from '@/types/movie'
+import { XMarkIcon, PlayIcon, PlusIcon, HandThumbUpIcon } from '@heroicons/react/24/outline'
 import { useProfile } from '@/contexts/ProfileContext'
-import { addToMyList, removeFromMyList, isInMyList } from '@/lib/storage'
 
 interface ContentModalProps {
   content: Movie
@@ -13,151 +11,181 @@ interface ContentModalProps {
 }
 
 export default function ContentModal({ content, onClose }: ContentModalProps) {
+  const [imageLoaded, setImageLoaded] = useState(false)
   const { currentProfile } = useProfile()
-  const [inMyList, setInMyList] = useState(false)
-  const [imageError, setImageError] = useState(false)
 
   useEffect(() => {
-    if (currentProfile) {
-      setInMyList(isInMyList(currentProfile.id, content.id))
+    // Prevent body scroll when modal is open
+    document.body.style.overflow = 'hidden'
+    
+    // Handle escape key
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose()
+      }
     }
-  }, [currentProfile, content.id])
+    
+    document.addEventListener('keydown', handleEscape)
+    
+    return () => {
+      document.body.style.overflow = 'unset'
+      document.removeEventListener('keydown', handleEscape)
+    }
+  }, [])
 
-  const handleMyListToggle = () => {
+  const addToMyList = () => {
     if (!currentProfile) return
-
-    if (inMyList) {
-      removeFromMyList(currentProfile.id, content.id)
-      setInMyList(false)
-    } else {
-      addToMyList(currentProfile.id, content)
-      setInMyList(true)
+    
+    const myList = JSON.parse(localStorage.getItem(`myList_${currentProfile.id}`) || '[]')
+    const isAlreadyInList = myList.some((item: Movie) => item.id === content.id)
+    
+    if (!isAlreadyInList) {
+      const updatedList = [...myList, content]
+      localStorage.setItem(`myList_${currentProfile.id}`, JSON.stringify(updatedList))
     }
+  }
+
+  const addToContinueWatching = () => {
+    if (!currentProfile) return
+    
+    const continueWatching = JSON.parse(localStorage.getItem(`continueWatching_${currentProfile.id}`) || '[]')
+    const existingIndex = continueWatching.findIndex((item: any) => item.id === content.id)
+    
+    if (existingIndex !== -1) {
+      continueWatching.splice(existingIndex, 1)
+    }
+    
+    const movieWithProgress = {
+      ...content,
+      progress: Math.floor(Math.random() * 80) + 10
+    }
+    
+    continueWatching.unshift(movieWithProgress)
+    
+    if (continueWatching.length > 10) {
+      continueWatching.splice(10)
+    }
+    
+    localStorage.setItem(`continueWatching_${currentProfile.id}`, JSON.stringify(continueWatching))
   }
 
   const handlePlay = () => {
-    // In a real app, this would start video playback
+    addToContinueWatching()
     console.log('Playing:', content.title)
-  }
-
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onClose()
-    }
+    onClose()
   }
 
   return (
-    <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm"
-      onClick={handleBackdropClick}
-    >
-      <div className="relative bg-netflix-gray rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
-        {/* Close Button */}
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      {/* Backdrop */}
+      <div 
+        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+        onClick={onClose}
+      />
+      
+      {/* Modal */}
+      <div className="relative w-full max-w-4xl mx-4 bg-zinc-900 rounded-lg overflow-hidden shadow-2xl max-h-[90vh] overflow-y-auto">
+        {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors"
+          className="absolute top-4 right-4 z-10 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center hover:bg-black/70 transition"
         >
-          <XMarkIcon className="w-6 h-6" />
+          <XMarkIcon className="w-6 h-6 text-white" />
         </button>
 
-        {/* Hero Section */}
-        <div className="relative aspect-video">
-          {!imageError ? (
-            <Image
-              src={content.backdropUrl || content.posterUrl}
-              alt={content.title}
-              fill
-              className="object-cover rounded-t-lg"
-              onError={() => setImageError(true)}
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gray-700 text-gray-400 rounded-t-lg">
-              <span className="text-lg">{content.title}</span>
-            </div>
-          )}
+        {/* Hero section */}
+        <div className="relative h-96">
+          <img
+            src={content.backdrop_path || content.poster_path || '/placeholder-movie.jpg'}
+            alt={content.title}
+            className={`w-full h-full object-cover transition-opacity duration-500 ${
+              imageLoaded ? 'opacity-100' : 'opacity-0'
+            }`}
+            onLoad={() => setImageLoaded(true)}
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-zinc-900 via-zinc-900/20 to-transparent" />
           
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-netflix-gray via-transparent to-transparent rounded-t-lg" />
-          
-          {/* Action Buttons */}
-          <div className="absolute bottom-8 left-8 flex items-center space-x-4">
-            <button
-              onClick={handlePlay}
-              className="flex items-center space-x-2 bg-white text-black px-6 py-3 rounded font-bold hover:bg-gray-200 transition-colors"
-            >
-              <PlayIcon className="w-5 h-5" />
-              <span>Play</span>
-            </button>
+          {/* Content overlay */}
+          <div className="absolute bottom-8 left-8 right-8">
+            <h1 className="text-4xl font-bold text-white mb-4">
+              {content.title}
+            </h1>
             
-            {currentProfile && (
+            {/* Action buttons */}
+            <div className="flex items-center space-x-4 mb-4">
               <button
-                onClick={handleMyListToggle}
-                className="p-3 bg-gray-600/80 text-white rounded-full hover:bg-gray-500/80 transition-colors"
-                title={inMyList ? 'Remove from My List' : 'Add to My List'}
+                onClick={handlePlay}
+                className="flex items-center space-x-2 bg-white text-black px-8 py-3 rounded font-semibold hover:bg-white/80 transition"
               >
-                {inMyList ? (
-                  <CheckIcon className="w-6 h-6" />
-                ) : (
-                  <PlusIcon className="w-6 h-6" />
-                )}
+                <PlayIcon className="w-6 h-6" />
+                <span>Play</span>
               </button>
-            )}
-            
-            <button className="p-3 bg-gray-600/80 text-white rounded-full hover:bg-gray-500/80 transition-colors">
-              <HandThumbUpIcon className="w-6 h-6" />
-            </button>
-            
-            <button className="p-3 bg-gray-600/80 text-white rounded-full hover:bg-gray-500/80 transition-colors">
-              <HandThumbDownIcon className="w-6 h-6" />
-            </button>
+              
+              <button
+                onClick={addToMyList}
+                className="w-12 h-12 border-2 border-gray-400 rounded-full flex items-center justify-center hover:border-white transition"
+              >
+                <PlusIcon className="w-6 h-6 text-white" />
+              </button>
+              
+              <button className="w-12 h-12 border-2 border-gray-400 rounded-full flex items-center justify-center hover:border-white transition">
+                <HandThumbUpIcon className="w-6 h-6 text-white" />
+              </button>
+            </div>
+
+            {/* Movie info */}
+            <div className="flex items-center space-x-4 text-white/70">
+              {content.vote_average && (
+                <span className="text-green-400 font-semibold">
+                  {Math.round(content.vote_average * 10)}% Match
+                </span>
+              )}
+              {content.release_date && (
+                <span>{new Date(content.release_date).getFullYear()}</span>
+              )}
+              <span className="border border-white/40 px-2 py-1 text-xs">HD</span>
+            </div>
           </div>
         </div>
 
-        {/* Content Info */}
+        {/* Details section */}
         <div className="p-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Info */}
+            {/* Main content */}
             <div className="lg:col-span-2">
-              <h1 className="text-3xl font-bold text-white mb-4">{content.title}</h1>
-              
-              {/* Metadata */}
-              <div className="flex items-center space-x-4 mb-6 text-sm">
-                <span className="text-green-400 font-bold">{content.imdbRating}% Match</span>
-                <span>{content.year}</span>
-                <span className="border border-gray-500 px-2 py-1 text-xs">{content.rating}</span>
-                <span className="flex items-center">
-                  <span className="text-yellow-400 mr-1">★</span>
-                  {content.imdbRating}
-                </span>
-              </div>
-              
-              {/* Description */}
-              <p className="text-white text-lg leading-relaxed mb-6">
+              <p className="text-white text-lg mb-6 leading-relaxed">
                 {content.overview}
               </p>
             </div>
             
-            {/* Side Info */}
-            <div className="text-sm text-gray-300 space-y-4">
-              <div>
-                <span className="text-gray-400">Genre: </span>
-                <span className="text-white">{content.genre}</span>
-              </div>
+            {/* Sidebar info */}
+            <div className="space-y-4 text-sm">
+              {content.release_date && (
+                <div>
+                  <span className="text-gray-400">Release Date: </span>
+                  <span className="text-white">
+                    {new Date(content.release_date).toLocaleDateString()}
+                  </span>
+                </div>
+              )}
               
-              <div>
-                <span className="text-gray-400">Duration: </span>
-                <span className="text-white">{content.duration || '120 min'}</span>
-              </div>
+              {content.vote_average && (
+                <div>
+                  <span className="text-gray-400">Rating: </span>
+                  <span className="text-white">
+                    {content.vote_average.toFixed(1)}/10
+                  </span>
+                </div>
+              )}
               
-              <div>
-                <span className="text-gray-400">Director: </span>
-                <span className="text-white">{content.director || 'Unknown'}</span>
-              </div>
-              
-              <div>
-                <span className="text-gray-400">Cast: </span>
-                <span className="text-white">{content.cast || 'Various actors'}</span>
-              </div>
+              {content.genre_ids && content.genre_ids.length > 0 && (
+                <div>
+                  <span className="text-gray-400">Genres: </span>
+                  <span className="text-white">
+                    {content.genre_ids.slice(0, 3).join(', ')}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
         </div>

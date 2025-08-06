@@ -3,12 +3,12 @@ export interface Profile {
   name: string
   avatar: string
   isKids: boolean
-  createdAt: string
 }
 
-export interface ProfileSettings {
-  language: string
-  maturityRating: string
-  autoplayPreviews: boolean
-  autoplayNext: boolean
+export interface ProfileContextType {
+  profiles: Profile[]
+  currentProfile: Profile | null
+  setCurrentProfile: (profile: Profile | null) => void
+  addProfile: (profile: Omit<Profile, 'id'>) => void
+  removeProfile: (id: string) => void
 }

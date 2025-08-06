@@ -1,9 +1,9 @@
 'use client'
 
-import { useRef, useState } from 'react'
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
-import MovieCard from './MovieCard'
+import { useState, useRef } from 'react'
 import { Movie } from '@/types/movie'
+import MovieCard from './MovieCard'
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline'
 
 interface ContentRowProps {
   title: string
@@ -12,81 +12,75 @@ interface ContentRowProps {
 }
 
 export default function ContentRow({ title, content, onContentClick }: ContentRowProps) {
+  const [scrollPosition, setScrollPosition] = useState(0)
   const scrollRef = useRef<HTMLDivElement>(null)
-  const [showLeftArrow, setShowLeftArrow] = useState(false)
-  const [showRightArrow, setShowRightArrow] = useState(true)
 
   const scroll = (direction: 'left' | 'right') => {
-    if (!scrollRef.current) return
-
-    const scrollAmount = scrollRef.current.clientWidth * 0.8
-    const newScrollLeft = direction === 'left' 
-      ? scrollRef.current.scrollLeft - scrollAmount
-      : scrollRef.current.scrollLeft + scrollAmount
-
-    scrollRef.current.scrollTo({
-      left: newScrollLeft,
-      behavior: 'smooth'
-    })
+    if (scrollRef.current) {
+      const scrollAmount = 400
+      const newPosition = direction === 'left' 
+        ? scrollPosition - scrollAmount 
+        : scrollPosition + scrollAmount
+      
+      scrollRef.current.scrollTo({
+        left: newPosition,
+        behavior: 'smooth'
+      })
+      setScrollPosition(newPosition)
+    }
   }
 
-  const handleScroll = () => {
-    if (!scrollRef.current) return
-
-    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
-    setShowLeftArrow(scrollLeft > 0)
-    setShowRightArrow(scrollLeft < scrollWidth - clientWidth - 10)
-  }
+  const canScrollLeft = scrollPosition > 0
+  const canScrollRight = scrollRef.current 
+    ? scrollPosition < (scrollRef.current.scrollWidth - scrollRef.current.clientWidth)
+    : true
 
   if (!content || content.length === 0) {
     return null
   }
 
   return (
-    <div className="relative mb-8 group">
-      {/* Title */}
-      <h2 className="text-xl md:text-2xl font-bold text-white mb-4 px-4 md:px-8 lg:px-16">
+    <div className="px-4 md:px-16 mb-8">
+      <h2 className="text-white text-xl md:text-2xl font-semibold mb-4">
         {title}
       </h2>
-
-      {/* Content Container */}
-      <div className="relative">
+      
+      <div className="relative group">
         {/* Left Arrow */}
-        {showLeftArrow && (
+        {canScrollLeft && (
           <button
             onClick={() => scroll('left')}
-            className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            className="absolute left-0 top-0 bottom-0 z-10 w-12 bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center hover:bg-black/70"
           >
-            <ChevronLeftIcon className="w-6 h-6" />
+            <ChevronLeftIcon className="w-8 h-8" />
           </button>
         )}
 
-        {/* Right Arrow */}
-        {showRightArrow && (
-          <button
-            onClick={() => scroll('right')}
-            className="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          >
-            <ChevronRightIcon className="w-6 h-6" />
-          </button>
-        )}
-
-        {/* Scrollable Content */}
+        {/* Content Scroll Container */}
         <div
           ref={scrollRef}
-          onScroll={handleScroll}
-          className="flex space-x-2 overflow-x-auto scrollbar-hide px-4 md:px-8 lg:px-16 pb-4"
+          className="flex space-x-2 overflow-x-auto scrollbar-hide scroll-smooth"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {content.map((item, index) => (
             <div key={`${item.id}-${index}`} className="flex-shrink-0">
               <MovieCard
                 movie={item}
                 onClick={() => onContentClick(item)}
-                showProgress={title === 'Continue Watching'}
               />
             </div>
           ))}
         </div>
+
+        {/* Right Arrow */}
+        {canScrollRight && (
+          <button
+            onClick={() => scroll('right')}
+            className="absolute right-0 top-0 bottom-0 z-10 w-12 bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center hover:bg-black/70"
+          >
+            <ChevronRightIcon className="w-8 h-8" />
+          </button>
+        )}
       </div>
     </div>
   )

@@ -1,28 +1,20 @@
 export interface Movie {
-  id: string
+  id: number
   title: string
   overview: string
-  posterUrl: string
-  backdropUrl?: string
-  year: number
-  genre: string
-  rating: string
-  imdbRating: number
-  duration?: string
-  director?: string
-  cast?: string
-  type: 'movie' | 'tv'
-  seasons?: number
-  episodes?: number
+  poster_path?: string
+  backdrop_path?: string
+  release_date?: string
+  vote_average?: number
+  genre_ids?: string[]
+  adult?: boolean
+  original_language?: string
+  original_title?: string
+  popularity?: number
+  video?: boolean
+  vote_count?: number
 }
 
-export interface ContentRow {
-  title: string
-  content: Movie[]
-}
-
-export interface SearchResult {
-  query: string
-  results: Movie[]
-  totalResults: number
+export interface MovieWithProgress extends Movie {
+  progress: number
 }

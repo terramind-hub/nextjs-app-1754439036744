@@ -1,150 +1,145 @@
 import { Movie } from '@/types/movie'
 
-// Mock data for demonstration
+// Mock movie data for demonstration
 const mockMovies: Movie[] = [
   {
-    id: '1',
+    id: 1,
     title: 'Stranger Things',
     overview: 'When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl.',
-    posterUrl: 'https://via.placeholder.com/300x450/1a1a1a/ffffff?text=Stranger+Things',
-    backdropUrl: 'https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=Stranger+Things',
-    year: 2016,
-    genre: 'Sci-Fi, Drama, Horror',
-    rating: 'TV-14',
-    imdbRating: 8.7,
-    type: 'tv',
-    seasons: 4
+    poster_path: 'https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg',
+    backdrop_path: 'https://image.tmdb.org/t/p/w1280/56v2KjBlU4XaOv9rVYEQypROD7P.jpg',
+    release_date: '2016-07-15',
+    vote_average: 8.7,
+    genre_ids: ['Drama', 'Fantasy', 'Horror']
   },
   {
-    id: '2',
+    id: 2,
     title: 'The Crown',
     overview: 'Follows the political rivalries and romance of Queen Elizabeth II\'s reign and the events that shaped the second half of the twentieth century.',
-    posterUrl: 'https://via.placeholder.com/300x450/1a1a1a/ffffff?text=The+Crown',
-    backdropUrl: 'https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=The+Crown',
-    year: 2016,
-    genre: 'Drama, History',
-    rating: 'TV-MA',
-    imdbRating: 8.6,
-    type: 'tv',
-    seasons: 6
+    poster_path: 'https://image.tmdb.org/t/p/w500/1M876KPjulVwppEpldhdc8V4o68.jpg',
+    backdrop_path: 'https://image.tmdb.org/t/p/w1280/wHa6KOJAoNTFLFtp7wguUJKSnju.jpg',
+    release_date: '2016-11-04',
+    vote_average: 8.2,
+    genre_ids: ['Drama', 'History']
   },
   {
-    id: '3',
-    title: 'Extraction',
-    overview: 'A black-market mercenary who has nothing to lose is hired to rescue the kidnapped son of an imprisoned international crime lord.',
-    posterUrl: 'https://via.placeholder.com/300x450/1a1a1a/ffffff?text=Extraction',
-    backdropUrl: 'https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=Extraction',
-    year: 2020,
-    genre: 'Action, Thriller',
-    rating: 'R',
-    imdbRating: 6.7,
-    type: 'movie',
-    duration: '116 min'
+    id: 3,
+    title: 'Ozark',
+    overview: 'A financial advisor drags his family from Chicago to the Missouri Ozarks, where he must launder $500 million in five years to appease a drug boss.',
+    poster_path: 'https://image.tmdb.org/t/p/w500/m73QiJOFyQIDdWXHKBVLVjGBjkx.jpg',
+    backdrop_path: 'https://image.tmdb.org/t/p/w1280/mYylcfkJ6krNgOyeUgdZm8n8Jzz.jpg',
+    release_date: '2017-07-21',
+    vote_average: 8.4,
+    genre_ids: ['Crime', 'Drama', 'Thriller']
   },
   {
-    id: '4',
-    title: 'The Witcher',
-    overview: 'Geralt of Rivia, a solitary monster hunter, struggles to find his place in a world where people often prove more wicked than beasts.',
-    posterUrl: 'https://via.placeholder.com/300x450/1a1a1a/ffffff?text=The+Witcher',
-    backdropUrl: 'https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=The+Witcher',
-    year: 2019,
-    genre: 'Fantasy, Adventure, Drama',
-    rating: 'TV-MA',
-    imdbRating: 8.2,
-    type: 'tv',
-    seasons: 3
-  },
-  {
-    id: '5',
+    id: 4,
     title: 'Money Heist',
     overview: 'An unusual group of robbers attempt to carry out the most perfect robbery in Spanish history - stealing 2.4 billion euros from the Royal Mint of Spain.',
-    posterUrl: 'https://via.placeholder.com/300x450/1a1a1a/ffffff?text=Money+Heist',
-    backdropUrl: 'https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=Money+Heist',
-    year: 2017,
-    genre: 'Crime, Drama, Mystery',
-    rating: 'TV-MA',
-    imdbRating: 8.3,
-    type: 'tv',
-    seasons: 5
+    poster_path: 'https://image.tmdb.org/t/p/w500/reEMJA1uzscCbkpeRJeTT2bjqUp.jpg',
+    backdrop_path: 'https://image.tmdb.org/t/p/w1280/xGexTKCJDkl12dTW4YCBDXWb1AD.jpg',
+    release_date: '2017-05-02',
+    vote_average: 8.3,
+    genre_ids: ['Action', 'Crime', 'Mystery']
   },
   {
-    id: '6',
-    title: 'Bird Box',
-    overview: 'Five years after an ominous unseen presence drives most of society to suicide, a mother and her two children make a desperate bid to reach safety.',
-    posterUrl: 'https://via.placeholder.com/300x450/1a1a1a/ffffff?text=Bird+Box',
-    backdropUrl: 'https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=Bird+Box',
-    year: 2018,
-    genre: 'Horror, Drama, Sci-Fi',
-    rating: 'R',
-    imdbRating: 6.6,
-    type: 'movie',
-    duration: '124 min'
+    id: 5,
+    title: 'The Witcher',
+    overview: 'Geralt of Rivia, a mutated monster-hunter for hire, journeys toward his destiny in a turbulent world where people often prove more wicked than beasts.',
+    poster_path: 'https://image.tmdb.org/t/p/w500/7vjaCdMw15FEbXyLQTVa04URsPm.jpg',
+    backdrop_path: 'https://image.tmdb.org/t/p/w1280/1TUg5pO1VZ4B0Q1amk3OlXvlpXV.jpg',
+    release_date: '2019-12-20',
+    vote_average: 8.1,
+    genre_ids: ['Action', 'Adventure', 'Drama']
+  },
+  {
+    id: 6,
+    title: 'Bridgerton',
+    overview: 'Wealth, lust, and betrayal set in the backdrop of Regency era England, seen through the eyes of the powerful Bridgerton family.',
+    poster_path: 'https://image.tmdb.org/t/p/w500/luoKpgVwi1E5nQsi7W0UuKHu2Rq.jpg',
+    backdrop_path: 'https://image.tmdb.org/t/p/w1280/6tHy5pI5yxfJUlOuKWdCYbqMR8z.jpg',
+    release_date: '2020-12-25',
+    vote_average: 7.3,
+    genre_ids: ['Drama', 'Romance']
+  },
+  {
+    id: 7,
+    title: 'Squid Game',
+    overview: 'Hundreds of cash-strapped players accept a strange invitation to compete in children\'s games for a tempting prize, but the stakes are deadly.',
+    poster_path: 'https://image.tmdb.org/t/p/w500/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg',
+    backdrop_path: 'https://image.tmdb.org/t/p/w1280/qw3J9cNeLioOLoR68WX7z79aCdK.jpg',
+    release_date: '2021-09-17',
+    vote_average: 7.8,
+    genre_ids: ['Action', 'Drama', 'Mystery']
+  },
+  {
+    id: 8,
+    title: 'Wednesday',
+    overview: 'Smart, sarcastic and a little dead inside, Wednesday Addams investigates a murder spree while making new friends — and foes — at Nevermore Academy.',
+    poster_path: 'https://image.tmdb.org/t/p/w500/9PFonBhy4cQy7Jz20NpMygczOkv.jpg',
+    backdrop_path: 'https://image.tmdb.org/t/p/w1280/iHSwvRVsRyxpX7FE7GbviaDvgGZ.jpg',
+    release_date: '2022-11-23',
+    vote_average: 8.6,
+    genre_ids: ['Comedy', 'Crime', 'Family']
   }
 ]
 
-// Generate more mock data
-const generateMockMovies = (count: number, baseTitle: string): Movie[] => {
-  return Array.from({ length: count }, (_, index) => ({
-    id: `${baseTitle.toLowerCase().replace(/\s+/g, '-')}-${index + 1}`,
-    title: `${baseTitle} ${index + 1}`,
-    overview: `This is a great ${baseTitle.toLowerCase()} that you should definitely watch. It has amazing storylines and characters.`,
-    posterUrl: `https://via.placeholder.com/300x450/1a1a1a/ffffff?text=${encodeURIComponent(baseTitle + ' ' + (index + 1))}`,
-    backdropUrl: `https://via.placeholder.com/1920x1080/1a1a1a/ffffff?text=${encodeURIComponent(baseTitle + ' ' + (index + 1))}`,
-    year: 2020 + (index % 4),
-    genre: 'Drama, Action',
-    rating: 'TV-14',
-    imdbRating: 7.0 + (Math.random() * 2),
-    type: Math.random() > 0.5 ? 'movie' : 'tv',
-    duration: '120 min'
-  }))
-}
-
-const allMovies = [
-  ...mockMovies,
-  ...generateMockMovies(20, 'Action Movie'),
-  ...generateMockMovies(20, 'Comedy Show'),
-  ...generateMockMovies(20, 'Drama Series'),
-  ...generateMockMovies(20, 'Thriller Film')
-]
+// Simulate API delay
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 export async function getFeaturedMovie(): Promise<Movie> {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 500))
+  await delay(500)
   return mockMovies[0]
 }
 
 export async function getMoviesByCategory(category: string): Promise<Movie[]> {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 300))
+  await delay(300)
   
   // Return different subsets based on category
   switch (category) {
     case 'trending':
-      return allMovies.slice(0, 20)
+      return mockMovies.slice(0, 6)
     case 'popular':
-      return allMovies.slice(5, 25)
+      return mockMovies.slice(1, 7)
     case 'action':
-      return allMovies.filter(movie => movie.genre.includes('Action')).slice(0, 20)
+      return mockMovies.filter(movie => 
+        movie.genre_ids?.includes('Action')
+      )
     case 'comedy':
-      return allMovies.filter(movie => movie.title.includes('Comedy')).slice(0, 20)
+      return mockMovies.filter(movie => 
+        movie.genre_ids?.includes('Comedy')
+      )
     case 'drama':
-      return allMovies.filter(movie => movie.genre.includes('Drama')).slice(0, 20)
+      return mockMovies.filter(movie => 
+        movie.genre_ids?.includes('Drama')
+      )
     case 'recent':
-      return allMovies.filter(movie => movie.year >= 2022).slice(0, 20)
+      return mockMovies.slice(2, 8)
     default:
-      return allMovies.slice(0, 20)
+      return mockMovies
   }
 }
 
 export async function searchMovies(query: string): Promise<Movie[]> {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 400))
+  await delay(400)
   
-  if (!query.trim()) return []
+  if (!query.trim()) {
+    return []
+  }
   
-  return allMovies.filter(movie => 
+  return mockMovies.filter(movie =>
     movie.title.toLowerCase().includes(query.toLowerCase()) ||
-    movie.genre.toLowerCase().includes(query.toLowerCase()) ||
     movie.overview.toLowerCase().includes(query.toLowerCase())
-  ).slice(0, 20)
+  )
+}
+
+export async function getMovieDetails(id: number): Promise<Movie | null> {
+  await delay(300)
+  return mockMovies.find(movie => movie.id === id) || null
+}
+
+export async function getSimilarMovies(id: number): Promise<Movie[]> {
+  await delay(400)
+  // Return random movies excluding the current one
+  return mockMovies.filter(movie => movie.id !== id).slice(0, 6)
 }

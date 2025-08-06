@@ -3,8 +3,8 @@
 export default function LoadingSkeleton() {
   return (
     <div className="min-h-screen bg-netflix-black">
-      {/* Hero Banner Skeleton */}
-      <div className="relative h-screen w-full">
+      {/* Hero skeleton */}
+      <div className="relative h-screen">
         <div className="absolute inset-0 bg-gray-800 animate-pulse" />
         <div className="absolute bottom-32 left-16 space-y-4">
           <div className="h-16 w-96 bg-gray-700 animate-pulse rounded" />
@@ -17,19 +17,20 @@ export default function LoadingSkeleton() {
         </div>
       </div>
 
-      {/* Content Rows Skeleton */}
+      {/* Content rows skeleton */}
       <div className="relative z-10 -mt-32 pb-20">
         {[1, 2, 3, 4].map((row) => (
-          <div key={row} className="mb-8">
-            {/* Row Title */}
-            <div className="h-8 w-48 bg-gray-700 animate-pulse rounded mb-4 mx-16" />
+          <div key={row} className="px-16 mb-8">
+            {/* Row title skeleton */}
+            <div className="h-8 w-48 bg-gray-700 animate-pulse rounded mb-4" />
             
-            {/* Cards */}
-            <div className="flex space-x-2 px-16">
+            {/* Cards skeleton */}
+            <div className="flex space-x-2">
               {[1, 2, 3, 4, 5, 6].map((card) => (
-                <div key={card} className="flex-shrink-0">
-                  <div className="w-64 aspect-video bg-gray-700 animate-pulse rounded" />
-                </div>
+                <div
+                  key={card}
+                  className="flex-shrink-0 w-64 h-36 bg-gray-700 animate-pulse rounded"
+                />
               ))}
             </div>
           </div>
