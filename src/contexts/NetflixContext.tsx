@@ -25,7 +25,7 @@ export function NetflixProvider({ children }: { children: ReactNode }) {
     searchQuery,
     setSearchQuery,
     isLoading,
-    setIsLoading
+    setIsLoading,
   }
 
   return (

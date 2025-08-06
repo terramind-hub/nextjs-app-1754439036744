@@ -3,7 +3,7 @@ export interface Movie {
   title: string
   overview: string
   posterUrl: string
-  backdropUrl?: string
+  backdropUrl: string
   year: number
   genre: string
   rating: string
@@ -24,25 +24,11 @@ export interface TVShow extends Movie {
 
 export interface MovieDetails extends Movie {
   trailerUrl?: string
-  similarMovies?: Movie[]
-  reviews?: Review[]
+  productionCompanies?: string[]
+  budget?: number
+  revenue?: number
+  languages?: string[]
+  countries?: string[]
 }
 
-export interface Review {
-  id: string
-  author: string
-  content: string
-  rating: number
-  date: string
-}
-
-export interface WatchProgress {
-  movieId: string
-  progress: number
-  lastWatched: string
-}
-
-export interface MyListItem {
-  movie: Movie
-  addedAt: string
-}
+export type ContentType = Movie | TVShow

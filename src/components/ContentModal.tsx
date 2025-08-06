@@ -38,6 +38,7 @@ export default function ContentModal({ content, onClose }: ContentModalProps) {
   const handlePlay = () => {
     // In a real app, this would start video playback
     console.log('Playing:', content.title)
+    onClose()
   }
 
   const handleBackdropClick = (e: React.MouseEvent) => {
@@ -83,9 +84,9 @@ export default function ContentModal({ content, onClose }: ContentModalProps) {
           <div className="absolute bottom-8 left-8 flex items-center space-x-4">
             <button
               onClick={handlePlay}
-              className="flex items-center space-x-2 bg-white text-black px-6 py-3 rounded font-bold hover:bg-gray-200 transition-colors"
+              className="flex items-center space-x-2 bg-white text-black px-8 py-3 rounded font-bold hover:bg-gray-200 transition-colors"
             >
-              <PlayIcon className="w-5 h-5" />
+              <PlayIcon className="w-6 h-6" />
               <span>Play</span>
             </button>
             
